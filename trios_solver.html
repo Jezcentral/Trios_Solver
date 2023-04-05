@@ -19,6 +19,12 @@ const calculateThisSum = () => {
 		// start calculation
 		let tempNumbersArray = Array.from(numbersArray);
 		let tempOperatorsArray = Array.from(operatorsArray);
+
+		// check that there are enough numbers amd operators
+		if (tempNumbersArray.length !== tempOperatorsArray.length+1) {
+			throw "";
+		}
+
 		for (let i = 0; i < Array.from(operatorsArray).length; i++) {
 
 			// get a first number, and take it out of the tempNumbersArray
@@ -52,7 +58,7 @@ const calculateThisSum = () => {
 					newNumber = parseInt(tempFirstNumber, 10) / parseInt(tempSecondNumber, 10);
 					break;
 				default:
-					newNumber = parseInt(tempFirstNumber, 10) + parseInt(tempSecondNumber, 10);
+					throw ""
 					break;
 			}
 
@@ -70,7 +76,8 @@ const calculateThisSum = () => {
 
 	}
 	catch (err) {
-		errorMessage.innerHTML = "Oops, this sum does not look solveable. Please make sure you have entered all the numbers, the operators and the answer correctly.";
+		errorMessage.innerHTML = "Oops, this sum does not look solveable. Please make sure you have entered all the numbers, the operators and the expected answer correctly.";
+		calculationInput.value = "";
 	}
 
 };
@@ -116,7 +123,7 @@ const calculateThisSum = () => {
 	</label>
 	<br/>
 	<label>
-		<span>Answer:</span>
+		<span>Expected answer:</span>
 		<input id="answer" type="text"/>
 	</label>
 	<br/>
