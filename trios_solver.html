@@ -94,13 +94,13 @@ const calculateThisSum = () => {
 	}
 	label span {
 		display:inline-block;
-		width: 150px;
+		width: 200px;
 	}
 	input {
 		width: 250px;
 	}
 	button {
-		margin: 0px 0 10px 153px;
+		margin: 0px 0 10px 203px;
 	}
 	p#error_message {
 		color: red;
@@ -109,21 +109,21 @@ const calculateThisSum = () => {
 </head>
 <body>
 <h1>Trios solver</h1>
-<p>Please enter the values separated by commas (",).</p>
+<p>Please enter the values separated by commas.</p>
 <p id="error_message"></p>
 <form>
 	<label>
-		<span>Numbers</span>
+		<span>Numbers (Eg "1, 2, -9, 10, 3")</span>
 		<input id="numbers" type="text"/>
 	</label>
 	<br/>
 	<label>
-		<span>Operators:</span>
+		<span>Operators (Eg "+, *, -, +")</span>
 		<input id="operators" type="text"/>
 	</label>
 	<br/>
 	<label>
-		<span>Expected answer:</span>
+		<span>Expected answer (Eg "3")</span>
 		<input id="answer" type="text"/>
 	</label>
 	<br/>
