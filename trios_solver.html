@@ -1,0 +1,89 @@
+<html>
+<head>
+<script type="text/javascript">
+const calculateThisSum = () => {
+	
+	// get elements
+	const numbersArray = document.getElementById("numbers").value.split(",");
+	const operatorsArray = document.getElementById("operators").value.split(",");
+	const theAnswer = parseInt(document.getElementById("answer").value, 10);
+	const calculationInput = document.getElementById("calculation");
+	
+	// start calculation
+	calculationInput.value = "";
+	let tempNumbersArray = Array.from(numbersArray);
+	let tempOperatorsArray = Array.from(operatorsArray);
+	for (let i = 0; i < Array.from(operatorsArray).length; i++) {
+
+		// get first number, and take it out of the tempNumbersArray
+		const tempFirstNumberIndex = parseInt(Math.random()*tempNumbersArray.length, 10);
+		const tempFirstNumber = Array.from(tempNumbersArray)[tempFirstNumberIndex];
+		tempNumbersArray.splice(tempFirstNumberIndex, 1);
+
+		// get operator, and take it out of the tempOperatorsArray
+		const tempOperatorIndex = parseInt(Math.random()*tempOperatorsArray.length, 10);
+		const tempOperatorSymbol = tempOperatorsArray[tempOperatorIndex];
+		tempOperatorsArray.splice(tempOperatorIndex, 1);
+
+		// get second number, and take it out of the tempNumbersArray
+		const tempSecondNumberIndex = parseInt(Math.random()*tempNumbersArray.length, 10);
+		const tempSecondNumber = Array.from(tempNumbersArray)[tempSecondNumberIndex];
+		tempNumbersArray.splice(tempSecondNumberIndex, 1);
+
+		// execute sum
+		let newNumber;
+		switch (tempOperatorSymbol) {
+			case '+':
+				newNumber = parseInt(tempFirstNumber, 10) + parseInt(tempSecondNumber, 10);
+				break;
+			case '-':
+				newNumber = parseInt(tempFirstNumber, 10) - parseInt(tempSecondNumber, 10);
+				break;
+			case '*':
+				newNumber = parseInt(tempFirstNumber, 10) * parseInt(tempSecondNumber, 10);
+				break;
+			case '/':
+				newNumber = parseInt(tempFirstNumber, 10) / parseInt(tempSecondNumber, 10);
+				break;
+			default:
+				newNumber = parseInt(tempFirstNumber, 10) + parseInt(tempSecondNumber, 10);
+				break;
+		}
+
+		// add new number to tempNumbersArray
+		tempNumbersArray.push(newNumber);
+
+		// show the new calculation
+		calculationInput.value += ` (${tempFirstNumber}${tempOperatorSymbol}${tempSecondNumber})`;
+	}
+
+	// check answer and recalculate if necessary
+	if (tempNumbersArray.length !== 1 || tempNumbersArray[0] !== theAnswer) {
+		calculateThisSum();
+	}
+
+};
+</script>
+</head>
+<body>
+<form id="trios_form">
+	<label>Numbers:
+		<input id="numbers" type="text"/>
+	</label>
+	<br/>
+	<label>Operators:
+		<input id="operators" type="text"/>
+	</label>
+	<br/>
+	<label>Answer:
+		<input id="answer" type="text"/>
+	</label>
+	<br/>
+	<button type="button" onclick="calculateThisSum()">Calculate</button>
+	<br/>
+	<label>Calculation:
+		<input id="calculation" type="text"/>
+	</label>
+</form>
+</body>
+</html>
