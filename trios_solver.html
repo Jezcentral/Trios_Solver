@@ -2,87 +2,129 @@
 <head>
 <script type="text/javascript">
 const calculateThisSum = () => {
-	
+
 	// get elements
 	const numbersArray = document.getElementById("numbers").value.split(",");
 	const operatorsArray = document.getElementById("operators").value.split(",");
 	const theAnswer = parseInt(document.getElementById("answer").value, 10);
 	const calculationInput = document.getElementById("calculation");
+	const errorMessage = document.getElementById("error_message");
 	
-	// start calculation
-	calculationInput.value = "";
-	let tempNumbersArray = Array.from(numbersArray);
-	let tempOperatorsArray = Array.from(operatorsArray);
-	for (let i = 0; i < Array.from(operatorsArray).length; i++) {
+	try {
+		
+		// clear elements
+		calculationInput.value = "";
+		errorMessage.innerHTML = "";
+		
+		// start calculation
+		let tempNumbersArray = Array.from(numbersArray);
+		let tempOperatorsArray = Array.from(operatorsArray);
+		for (let i = 0; i < Array.from(operatorsArray).length; i++) {
 
-		// get first number, and take it out of the tempNumbersArray
-		const tempFirstNumberIndex = parseInt(Math.random()*tempNumbersArray.length, 10);
-		const tempFirstNumber = Array.from(tempNumbersArray)[tempFirstNumberIndex];
-		tempNumbersArray.splice(tempFirstNumberIndex, 1);
+			// get a first number, and take it out of the tempNumbersArray
+			const tempFirstNumberIndex = parseInt(Math.random()*tempNumbersArray.length, 10);
+			const tempFirstNumber = Array.from(tempNumbersArray)[tempFirstNumberIndex];
+			tempNumbersArray.splice(tempFirstNumberIndex, 1);
 
-		// get operator, and take it out of the tempOperatorsArray
-		const tempOperatorIndex = parseInt(Math.random()*tempOperatorsArray.length, 10);
-		const tempOperatorSymbol = tempOperatorsArray[tempOperatorIndex];
-		tempOperatorsArray.splice(tempOperatorIndex, 1);
+			// get an operator, and take it out of the tempOperatorsArray
+			const tempOperatorIndex = parseInt(Math.random()*tempOperatorsArray.length, 10);
+			const tempOperatorSymbol = tempOperatorsArray[tempOperatorIndex].trim();
+			tempOperatorsArray.splice(tempOperatorIndex, 1);
 
-		// get second number, and take it out of the tempNumbersArray
-		const tempSecondNumberIndex = parseInt(Math.random()*tempNumbersArray.length, 10);
-		const tempSecondNumber = Array.from(tempNumbersArray)[tempSecondNumberIndex];
-		tempNumbersArray.splice(tempSecondNumberIndex, 1);
+			// get a second number, and take it out of the tempNumbersArray
+			const tempSecondNumberIndex = parseInt(Math.random()*tempNumbersArray.length, 10);
+			const tempSecondNumber = Array.from(tempNumbersArray)[tempSecondNumberIndex];
+			tempNumbersArray.splice(tempSecondNumberIndex, 1);
 
-		// execute sum
-		let newNumber;
-		switch (tempOperatorSymbol) {
-			case '+':
-				newNumber = parseInt(tempFirstNumber, 10) + parseInt(tempSecondNumber, 10);
-				break;
-			case '-':
-				newNumber = parseInt(tempFirstNumber, 10) - parseInt(tempSecondNumber, 10);
-				break;
-			case '*':
-				newNumber = parseInt(tempFirstNumber, 10) * parseInt(tempSecondNumber, 10);
-				break;
-			case '/':
-				newNumber = parseInt(tempFirstNumber, 10) / parseInt(tempSecondNumber, 10);
-				break;
-			default:
-				newNumber = parseInt(tempFirstNumber, 10) + parseInt(tempSecondNumber, 10);
-				break;
+			// execute sum
+			let newNumber;
+			switch (tempOperatorSymbol) {
+				case '+':
+					newNumber = parseInt(tempFirstNumber, 10) + parseInt(tempSecondNumber, 10);
+					break;
+				case '-':
+					newNumber = parseInt(tempFirstNumber, 10) - parseInt(tempSecondNumber, 10);
+					break;
+				case '*':
+					newNumber = parseInt(tempFirstNumber, 10) * parseInt(tempSecondNumber, 10);
+					break;
+				case '/':
+					newNumber = parseInt(tempFirstNumber, 10) / parseInt(tempSecondNumber, 10);
+					break;
+				default:
+					newNumber = parseInt(tempFirstNumber, 10) + parseInt(tempSecondNumber, 10);
+					break;
+			}
+
+			// add new number to tempNumbersArray
+			tempNumbersArray.push(newNumber);
+
+			// show the calculation step on the page so it can be replicated by the player
+			calculationInput.value += `(${tempFirstNumber} ${tempOperatorSymbol.trim()} ${tempSecondNumber}) `;
 		}
 
-		// add new number to tempNumbersArray
-		tempNumbersArray.push(newNumber);
+		// check answer and recalculate if the answer is wrong
+		if (tempNumbersArray.length !== 1 || tempNumbersArray[0] !== theAnswer) {
+			calculateThisSum();
+		}
 
-		// show the new calculation
-		calculationInput.value += ` (${tempFirstNumber}${tempOperatorSymbol}${tempSecondNumber})`;
 	}
-
-	// check answer and recalculate if necessary
-	if (tempNumbersArray.length !== 1 || tempNumbersArray[0] !== theAnswer) {
-		calculateThisSum();
+	catch (err) {
+		errorMessage.innerHTML = "Oops, this sum does not look solveable. Please make sure you have entered all the numbers, the operators and the answer correctly.";
 	}
 
 };
 </script>
+<style type="text/css">
+	html {
+		font-weight:normal;
+		font-size: 14px;
+		font-family: arial;
+	}
+	label {
+		display: block;
+		padding: 5px 10px 0 0;
+	}
+	label span {
+		display:inline-block;
+		width: 150px;
+	}
+	input {
+		width: 250px;
+	}
+	button {
+		margin: 0px 0 10px 153px;
+	}
+	p#error_message {
+		color: red;
+	}
+</style>
 </head>
 <body>
-<form id="trios_form">
-	<label>Numbers:
+<h1>Trios solver</h1>
+<p>Please enter the values separated by commas (",).</p>
+<p id="error_message"></p>
+<form>
+	<label>
+		<span>Numbers</span>
 		<input id="numbers" type="text"/>
 	</label>
 	<br/>
-	<label>Operators:
+	<label>
+		<span>Operators:</span>
 		<input id="operators" type="text"/>
 	</label>
 	<br/>
-	<label>Answer:
+	<label>
+		<span>Answer:</span>
 		<input id="answer" type="text"/>
 	</label>
 	<br/>
 	<button type="button" onclick="calculateThisSum()">Calculate</button>
 	<br/>
-	<label>Calculation:
-		<input id="calculation" type="text"/>
+	<label>
+		<span>Calculation:</span>
+		<input id="calculation" type="text" readonly />
 	</label>
 </form>
 </body>
