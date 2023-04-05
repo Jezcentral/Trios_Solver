@@ -66,7 +66,7 @@ const calculateThisSum = () => {
 			tempNumbersArray.push(newNumber);
 
 			// show the calculation step on the page so it can be replicated by the player
-			calculationInput.value += `(${tempFirstNumber} ${tempOperatorSymbol.trim()} ${tempSecondNumber}) `;
+			calculationInput.value += `(${parseInt(tempFirstNumber, 10)} ${tempOperatorSymbol.trim()} ${parseInt(tempSecondNumber, 10)}) `;
 		}
 
 		// check answer and recalculate if the answer is wrong
