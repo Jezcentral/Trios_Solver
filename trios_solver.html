@@ -22,7 +22,7 @@ const calculateThisSum = () => {
 
 		// check that there are enough numbers amd operators
 		if (tempNumbersArray.length !== tempOperatorsArray.length+1) {
-			throw "";
+			throw "incorrectLengths";
 		}
 
 		for (let i = 0; i < Array.from(operatorsArray).length; i++) {
@@ -56,6 +56,11 @@ const calculateThisSum = () => {
 					break;
 				case '/':
 					newNumber = parseInt(tempFirstNumber, 10) / parseInt(tempSecondNumber, 10);
+					// trios doesn't allow non-integers as a result of division, so re-run if this happens
+					newNumber = Number(newNumber);
+					if (!Number.isInteger(newNumber)) {
+						throw "nonInteger";
+					}
 					break;
 				default:
 					throw ""
@@ -76,8 +81,13 @@ const calculateThisSum = () => {
 
 	}
 	catch (err) {
-		errorMessage.innerHTML = "Oops, this sum does not look solveable. Please make sure you have entered all the numbers, the operators and the expected answer correctly.";
-		calculationInput.value = "";
+		if (err === "incorrectLengths") {
+			errorMessage.innerHTML = "Oops, this sum does not look solveable. Please make sure you have entered all the numbers, the operators and the expected answer correctly.";
+			console.log('err', err);
+			calculationInput.value = "";
+		} else if (err === "nonInteger") {
+			calculateThisSum();
+		}
 	}
 
 };
@@ -118,12 +128,12 @@ const calculateThisSum = () => {
 	</label>
 	<br/>
 	<label>
-		<span>Operators (Eg "+, *, -, +")</span>
+		<span>Operators (Eg "+, *, +, /")</span>
 		<input id="operators" type="text"/>
 	</label>
 	<br/>
 	<label>
-		<span>Expected answer (Eg "3")</span>
+		<span>Expected answer (Eg "-3")</span>
 		<input id="answer" type="text"/>
 	</label>
 	<br/>
